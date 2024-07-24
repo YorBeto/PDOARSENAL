@@ -7,9 +7,12 @@ use proyecto\Controller\crearPersonaController;
 use proyecto\Models\User;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
+use proyecto\Models\socios;
 
 
 Router::get('/prueba',[crearPersonaController::class,"prueba"]);
+Router::get('/socios',[socios::class,"mostrarsocios"]);
+
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
 Router::get('/usuario/buscar/$id', function ($id) {
