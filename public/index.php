@@ -8,14 +8,19 @@ use proyecto\Models\User;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
 use proyecto\Models\socios;
+use proyecto\Models\inbody_citas;
+
 
 
 Router::get('/prueba',[crearPersonaController::class,"prueba"]);
 Router::get('/socios',[socios::class,"mostrarsocios"]);
 
+Router::get('/citas',[inbody_citas::class,"mostrarcitas"]);
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
 Router::get('/usuario/buscar/$id', function ($id) {
+
+
 
     $user= User::find($id);
     if(!$user)
