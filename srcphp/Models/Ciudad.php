@@ -2,7 +2,6 @@
 
 namespace proyecto\Models;
 
-
 /**
  * Class Persona
  */
