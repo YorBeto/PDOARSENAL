@@ -32,6 +32,11 @@ Router::get('/usuario/buscar/$id', function ($id) {
 });
 Router::get('/respuesta', [crearPersonaController::class, "response"]);
 Router::post('/insertarproducto', [ProductosController::class, "insertarProducto"]);
+Router::get('/producto/buscar', [ProductosController::class, "buscarProducto"]);
+Router::post('/producto/actualizar', [ProductosController::class, "actualizarProducto"]);
+Router::delete('/producto/eliminar', [ProductosController::class, "eliminarProducto"]);
+Router::get('/productos', [ProductosController::class, "mostrarProductos"]);
+
 Router::any('/404', '../views/404.php');
 
 ?>
