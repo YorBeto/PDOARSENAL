@@ -12,6 +12,8 @@ use proyecto\Models\clientes;
 use proyecto\Models\socios;
 use proyecto\Models\inbody_citas;
 use proyecto\Models\productos_servicios;
+use proyecto\Controller\PersonasController;
+use proyecto\Models\Personas;
 
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
 
@@ -19,6 +21,8 @@ Router::get('/clientes', [clientes::class, "mostrarclientes"]);
 Router::get('/socios', [socios::class, "mostrarsocios"]);
 Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
 Router::get('/productos', [productos_servicios::class, "mostrarproductos"]);
+
+Router::post('/registro',[PersonasController::class,"registroclientes"]);
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
 Router::get('/usuario/buscar/$id', function ($id) {

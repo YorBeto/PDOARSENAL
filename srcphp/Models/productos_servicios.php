@@ -17,5 +17,4 @@ class productos_servicios extends Models
         return $success->send();
     }
 
-
 }
