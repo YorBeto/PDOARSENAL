@@ -3,28 +3,39 @@
 namespace proyecto;
 require("../vendor/autoload.php");
 
+
+
 use proyecto\Controller\crearPersonaController;
 use proyecto\Controller\ProductosController;
 use proyecto\Models\User;
 use proyecto\Response\Failure;
 use proyecto\Response\Success;
 use proyecto\Models\clientes;
-use proyecto\Models\socios;
+
 use proyecto\Models\inbody_citas;
 use proyecto\Models\productos_servicios;
 use proyecto\Controller\PersonasController;
 use proyecto\Models\Personas;
+use proyecto\Controller\MostrarSociosController;
+use proyecto\Controller\LoginController;
+use proyecto\Controller\LoginSociosController;
+
+
+
 
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
 
 Router::get('/clientes', [clientes::class, "mostrarclientes"]);
-Router::get('/socios', [socios::class, "mostrarsocios"]);
+Router::get('/socios', [MostrarSociosController::class, "mostrarsocios"]);
 Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
 Router::get('/productos', [productos_servicios::class, "mostrarproductos"]);
 
 Router::post('/registro',[PersonasController::class,"registroclientes"]);
+Router::post('/login',[LoginController::class,"login"]);
+Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
+
 Router::get('/usuario/buscar/$id', function ($id) {
     $user = User::find($id);
     if (!$user) {
@@ -43,4 +54,4 @@ Router::get('/productos', [ProductosController::class, "mostrarProductos"]);
 
 Router::any('/404', '../views/404.php');
 
-?>
+

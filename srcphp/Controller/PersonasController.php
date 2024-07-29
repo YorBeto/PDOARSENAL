@@ -2,9 +2,9 @@
 
 namespace proyecto\Controller;
 
-use proyecto\Models\Personas;
-use proyecto\Response\Success;
 use proyecto\Models\Table;
+use proyecto\Response\Success;
+use proyecto\Models\Personas;
 
 class PersonasController {
 
@@ -12,6 +12,15 @@ class PersonasController {
         // Leer datos del cuerpo de la solicitud
         $JSONData = file_get_contents("php://input");
         $dataObject = json_decode($JSONData);
+
+        // Verificar que las propiedades existen en el objeto
+        if (!isset($dataObject->nombre) || !isset($dataObject->apellidos) || 
+            !isset($dataObject->fechaNacimiento) || !isset($dataObject->sexo) || 
+            !isset($dataObject->correo) || !isset($dataObject->telefono) || 
+            !isset($dataObject->contrasena)) {
+            echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
+            return;
+        }
 
         // Obtener los datos del objeto JSON
         $nombre = $dataObject->nombre;
@@ -22,10 +31,9 @@ class PersonasController {
         $telefono = $dataObject->telefono;
         $contrasena = $dataObject->contrasena;
 
-        // Cifrar la contraseña (ajustar según tu método de cifrado)
-        $contrasena_cifrada = password_hash($contrasena, PASSWORD_BCRYPT);
+        
 
-        // Llamar al procedimiento almacenado
+        // Llamar al procedimiento almacenado para registrar a la persona
         $query = "CALL RegistrarPersonaLogin(
             '$nombre', 
             '$apellidos', 
@@ -33,8 +41,7 @@ class PersonasController {
             '$sexo', 
             '$correo', 
             '$telefono', 
-            '$contrasena_cifrada', 
-            'your_encryption_key', 
+            '$contrasena', 
             'ROL001'
         )";
 
@@ -45,4 +52,6 @@ class PersonasController {
         $r = new Success($resultados);
         return $r->send();
     }
+
+    
 }

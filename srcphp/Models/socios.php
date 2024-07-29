@@ -14,11 +14,6 @@ class socios extends Models
     protected $filleable = ["ID_SOCIO,ID_CLIENTE,MEMBRESIA,FECHA_INICIO,FECHA_FIN,ESTADO_DE_MEMB"];
     protected $table = "socios";
 
-    public function mostrarsocios(){
-        $socio = socios::all();
-        $success = new Success($socio);
-        return $success->send();
-    }
 
 
 }
