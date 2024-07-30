@@ -3,6 +3,7 @@
 namespace proyecto\Models;
 use proyecto\Models\Models;
 use proyecto\Response\Success;
+use proyecto\Models\Table;
 
 
 class productos_servicios extends Models
@@ -22,12 +23,5 @@ class productos_servicios extends Models
     }
 
     
-    public function obtenerCategorias()
-    {
-        $categoria = new Table();
-        $todaslascategorias = $categoria->query("SELECT NOMBRE FROM CATEGORIA_PRODUCTOS");
-
-        $success = new Success($todaslascategorias);
-        return $success->send();
-    }
+  
 }
