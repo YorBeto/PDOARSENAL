@@ -10,9 +10,6 @@
 
     class Models
     {
-        /**
-         * Models constructor.
-         */
         protected $filleable = [];
         public static $pdo = null;
         protected $table = "";
@@ -22,7 +19,7 @@
         {
 
 
-            $cc = new  Conexion("ARSENAL_GYM", "localhost", "root", ""); 
+            $cc = new  Conexion("arsenal_gym", "localhost", "root", "");
 
             self::$pdo = $cc->getPDO();
         }

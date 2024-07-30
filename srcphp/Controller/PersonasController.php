@@ -7,7 +7,7 @@ use proyecto\Response\Success;
 use proyecto\Models\Personas;
    
 class PersonasController {
- 
+
     public function registroclientes() {
         // Leer datos del cuerpo de la solicitud
         $JSONData = file_get_contents("php://input");
@@ -47,10 +47,10 @@ class PersonasController {
             '$encryptionKey'
         )";
 
-        
+        // Ejecutar la consulta
         $resultados = Table::query($query);
 
-      
+        // Retornar la respuesta
         $r = new Success($resultados);
         return $r->send();
     }
