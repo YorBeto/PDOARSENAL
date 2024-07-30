@@ -5,7 +5,7 @@ namespace proyecto\Controller;
 use proyecto\Models\Table;
 use proyecto\Response\Success;
 use proyecto\Models\Personas;
-
+   
 class PersonasController {
 
     public function registroclientes() {
