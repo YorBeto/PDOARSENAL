@@ -31,7 +31,8 @@ class PersonasController {
         $telefono = $dataObject->telefono;
         $contrasena = $dataObject->contrasena;
 
-        
+        // Clave de encriptación (asegúrate de manejar esto de manera segura)
+        $encryptionKey = 'tu_clave_de_encriptacion';  // Cambia esto por tu clave real
 
         // Llamar al procedimiento almacenado para registrar a la persona
         $query = "CALL RegistrarPersonaLogin(
@@ -42,7 +43,8 @@ class PersonasController {
             '$correo', 
             '$telefono', 
             '$contrasena', 
-            'ROL001'
+            'ROL001',
+            '$encryptionKey'
         )";
 
         // Ejecutar la consulta
@@ -52,6 +54,4 @@ class PersonasController {
         $r = new Success($resultados);
         return $r->send();
     }
-
-    
 }

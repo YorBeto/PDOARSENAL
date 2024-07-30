@@ -8,7 +8,7 @@ use proyecto\Response\Success;
 class productos_servicios extends Models
 {
     protected $table = "PRODUCTOS_SERVICIOS";
-
+    protected $id = "ID_PRODUCTO";
     protected $filleable = ['ID_PRODUCTO', 'NOMBRE', 'DESCRIPCION', 'PRECIO', 'STOCK', 'ID_CATEGORIA'];
 
     public function mostrarproductos(){
