@@ -2,6 +2,7 @@
 
 namespace proyecto\Models;
 use proyecto\Models\Models;
+use proyecto\Models\Table;
 use proyecto\Response\Success;
 
 
@@ -10,8 +11,7 @@ use proyecto\Response\Success;
  */
 class inbody_citas extends Models
 {
-    
-    protected $filleable = ["ID_CITA,ID_CLIENTE,ID_FECHA_HORA,PRECIO,FORMA_PAGO,ESTADO_CITA"];
+    protected $fillable = ["ID_CITA,ID_CLIENTE,ID_FECHA_HORA,PRECIO,FORMA_PAGO,ESTADO_CITA"];
     protected $table = "inbody_citas";
 
     public function mostrarcitas(){
@@ -20,5 +20,18 @@ class inbody_citas extends Models
         return $success->send();
     }
 
+    public function obtenerFechasFuturas(){
+        $fechasFuturas = new table();
+        $todaslasfechas = $fechasFuturas->query("SELECT FECHAS FROM FECHAS WHERE FECHAS > CURRENT_DATE");
+        $success = new Success($todaslasfechas);
+        return $success->send();
+    }
 
+    public function obtenerHoras(){
+        $horas = new table();
+        $todaslashoras = $horas->query("SELECT HORA FROM HORARIOS");
+        $success = new Success($todaslashoras);
+        return $success->send();
+    }
+    
 }

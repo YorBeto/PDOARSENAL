@@ -42,8 +42,8 @@ class ProductosController
     }
 
 // Buscar producto por ID
-public function buscarProducto()
-{
+    public function buscarProducto()
+    {
     if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_producto'])) {
         $id_producto = $_GET['id_producto'];
 
@@ -58,11 +58,11 @@ public function buscarProducto()
             echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
         }
     }
-}
+    }   
 
 // Actualizar producto por ID
 public function actualizarProducto()
-{
+    {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $data = json_decode(file_get_contents("php://input"), true);
         $id_producto = $data['id_producto'] ?? null;
@@ -94,11 +94,11 @@ public function actualizarProducto()
             echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
         }
     }
-}
+    }
 
 // Eliminar producto por ID
 public function eliminarProducto()
-{
+    {
     if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
         $data = json_decode(file_get_contents("php://input"), true);
         $id_producto = $data['id_producto'] ?? null;
@@ -115,7 +115,7 @@ public function eliminarProducto()
             echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
         }
     }
-}
+    }
 
 // Mostrar todos los productos
 public function mostrarProductos()
@@ -129,4 +129,7 @@ public function mostrarProductos()
     return $success ->send();
 }
 }
+
+
+
 ?>
