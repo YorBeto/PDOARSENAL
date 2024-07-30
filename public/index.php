@@ -23,14 +23,12 @@ use proyecto\Controller\ProductosController;
 
 
 
-
-
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
 
 Router::get('/clientes', [clientes::class, "mostrarclientes"]);
 Router::get('/socios', [MostrarSociosController::class, "mostrarsocios"]);
 Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
-
+Router::get('/categorias', [productos_servicios::class, "obtenerCategorias"]);
 
 Router::post('/registro',[PersonasController::class,"registroclientes"]);
 Router::post('/login',[LoginController::class,"login"]);
@@ -56,5 +54,3 @@ Router::delete('/producto/eliminar', [ProductosController::class, "eliminarProdu
 
 
 Router::any('/404', '../views/404.php');
-
-
