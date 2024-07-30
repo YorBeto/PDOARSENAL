@@ -17,7 +17,7 @@ use proyecto\Controller\LoginController;
 use proyecto\Controller\LoginSociosController;
 use proyecto\Controller\ProductosController;
 
-
+    
 
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
 
