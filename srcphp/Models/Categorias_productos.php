@@ -6,7 +6,7 @@ use proyecto\Models\Models;
 use proyecto\Response\Success;
 use proyecto\Models\Table;
 
-class Categorias_productos {
+class Categorias_productos extends Models {  
     protected $table = "categoria_productos";
     protected $id = "ID_CATEGORIA";
     protected $filleable = ['ID_CATEGORIA', 'NOMBRE'];
