@@ -26,7 +26,7 @@ Router::get('/socios', [MostrarSociosController::class, "mostrarsocios"]);
 Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
 Router::get('/categorias', [productos_servicios::class, "obtenerCategorias"]);
 
-Router::post('/registro',[PersonasController::class,"registroclientes"]);
+Router::post('/registro2',[PersonasController::class,"registroclientes"]);
 Router::post('/login',[LoginController::class,"login"]);
 Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
 
