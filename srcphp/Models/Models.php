@@ -10,9 +10,6 @@
 
     class Models
     {
-        /**
-         * Models constructor.
-         */
         protected $filleable = [];
         public static $pdo = null;
         protected $table = "";
