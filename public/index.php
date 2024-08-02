@@ -5,25 +5,31 @@ namespace proyecto;
 require("../vendor/autoload.php");
 
 use proyecto\Controller\crearPersonaController;
+use proyecto\Models\User;
+use proyecto\Response\Failure;
+use proyecto\Response\Success;
+use proyecto\Models\clientes;
+use proyecto\Models\inbody_citas;
+use proyecto\Models\productos_servicios;
 use proyecto\Controller\PersonasController;
+use proyecto\Models\Personas;
 use proyecto\Controller\MostrarSociosController;
 use proyecto\Controller\LoginController;
 use proyecto\Controller\LoginSociosController;
 use proyecto\Controller\ProductosController;
-use proyecto\Models\User;
-use proyecto\Models\clientes;
-use proyecto\Models\inbody_citas;
-use proyecto\Models\productos_servicios;
-use proyecto\Models\categorias_productos;
-use proyecto\Response\Failure;
-use proyecto\Response\Success;
 
-// Rutas GET
+
+
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
 Router::get('/clientes', [clientes::class, "mostrarclientes"]);
 Router::get('/socios', [MostrarSociosController::class, "mostrarsocios"]);
 Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
-Router::get('/categorias', [categorias_productos::class, "obtenerCategorias"]);
+Router::get('/categorias', [productos_servicios::class, "obtenerCategorias"]);
+
+Router::post('/registro',[PersonasController::class,"registroclientes"]);
+Router::post('/login',[LoginController::class,"login"]);
+Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
+
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
 Router::get('/productos', [productos_servicios::class, "mostrarProductos"]);
 
