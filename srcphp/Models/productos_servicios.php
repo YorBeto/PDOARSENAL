@@ -1,6 +1,7 @@
 <?php
 
 namespace proyecto\Models;
+
 use proyecto\Models\Models;
 use proyecto\Response\Success;
 use proyecto\Models\Table;
@@ -21,7 +22,5 @@ class productos_servicios extends Models
     $success=new Success($todoslosproductos);
     return $success ->send();
     }
-
-    
-  
 }
+

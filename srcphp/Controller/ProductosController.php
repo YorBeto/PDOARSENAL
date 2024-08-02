@@ -5,8 +5,10 @@ namespace proyecto\Controller;
 use proyecto\Models\productos_servicios;
 use Exception;
 use proyecto\Models\Table;
+use proyecto\Models\find;
+use proyecto\Models\save;
 
-class ProductosController
+class ProductosController extends models
 {
     public function insertarProducto()
     {
@@ -42,27 +44,8 @@ class ProductosController
     }
 
 // Buscar producto por ID
-    public function buscarProducto()
-    {
-    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id_producto'])) {
-        $id_producto = $_GET['id_producto'];
-
-        try {
-            $producto = productos_servicios::find($id_producto);
-            if ($producto) {
-                echo json_encode(["status" => 200, "data" => $producto]);
-            } else {
-                echo json_encode(["status" => 404, "message" => "Producto no encontrado."]);
-            }
-        } catch (Exception $e) {
-            echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
-        }
-    }
-    }   
-
-// Actualizar producto por ID
 public function actualizarProducto()
-    {
+{
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $data = json_decode(file_get_contents("php://input"), true);
         $id_producto = $data['id_producto'] ?? null;
@@ -94,14 +77,15 @@ public function actualizarProducto()
             echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
         }
     }
-    }
+}
+
 
 // Eliminar producto por ID
 public function eliminarProducto()
-    {
+{
     if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
         $data = json_decode(file_get_contents("php://input"), true);
-        $id_producto = $data['id_producto'] ?? null;
+        $id_producto = $data['id_producto']?? null;
 
         if (!$id_producto) {
             echo json_encode(["status" => 400, "message" => "ID Producto es obligatorio."]);
@@ -112,10 +96,10 @@ public function eliminarProducto()
             productos_servicios::delete($id_producto);
             echo json_encode(["status" => 200, "message" => "Producto eliminado correctamente."]);
         } catch (Exception $e) {
-            echo json_encode(["status" => 500, "message" => "Error: " . $e->getMessage()]);
+            echo json_encode(["status" => 500, "message" => "Error: ". $e->getMessage()]);
         }
     }
-    }
+}
 
 // Mostrar todos los productos
 public function mostrarProductos()
