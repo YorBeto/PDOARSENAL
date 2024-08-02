@@ -21,7 +21,5 @@ class productos_servicios extends Models
     $success=new Success($todoslosproductos);
     return $success ->send();
     }
-
-    
-  
 }
+
