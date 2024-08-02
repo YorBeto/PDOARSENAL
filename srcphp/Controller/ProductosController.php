@@ -6,7 +6,7 @@ use proyecto\Models\productos_servicios;
 use Exception;
 use proyecto\Models\Table;
 
-class ProductosController
+class ProductosController extends models
 {
     public function insertarProducto()
     {
