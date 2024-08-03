@@ -27,12 +27,13 @@ Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
 Router::get('/categorias', [productos_servicios::class, "obtenerCategorias"]);
 
 Router::post('/registro',[PersonasController::class,"registroclientes"]);
-Router::post('/login',[LoginController::class,"login"]);
+Router::post('/loginClientes',[LoginController::class,"loginClientes"]);
+
 Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
 Router::get('/productos', [productos_servicios::class, "mostrarProductos"]);
-
+Router::get('/producto/buscar', [ProductosController::class, "buscarProducto"]);
 Router::get('/usuario/buscar/$id', function ($id) {
     $user = User::find($id);
     if (!$user) {
@@ -46,7 +47,7 @@ Router::get('/respuesta', [crearPersonaController::class, "response"]);
 
 // Rutas POST
 Router::post('/registro', [PersonasController::class, "registroclientes"]);
-Router::post('/login', [LoginController::class, "login"]);
+
 Router::post('/loginSocios', [LoginSociosController::class, "loginsocios"]);
 Router::post('/insertarproducto', [ProductosController::class, "insertarProducto"]);
 Router::post('/producto/actualizar', [ProductosController::class, "actualizarProducto"]);
