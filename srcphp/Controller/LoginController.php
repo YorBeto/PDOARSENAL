@@ -22,11 +22,12 @@ class LoginController
 
       
         $login=new Table();
-        $loguearse=$login->query("SELECT persona.ID_PERSONA, AES_DECRYPT(usuarios.CONTRASEÑA, 'administrador') AS contraseña_desencriptada
-                  FROM persona
-                  INNER JOIN clientes ON persona.ID_PERSONA = clientes.ID_PERSONA
-                  INNER JOIN usuarios ON persona.ID_USUARIO = usuarios.ID_USUARIO
-                  WHERE persona.CORREO = '$correo'");
+        $loguearse=$login->query("SELECT PERSONA.CORREO, 
+        cast(aes_decrypt(usuarios.contraseña,'administrador') as char) as contraseña
+  FROM USUARIOS 
+  INNER JOIN PERSONA ON USUARIOS.ID_USUARIO = PERSONA.ID_USUARIO
+  WHERE PERSONA.CORREO = '$correo'
+  and  cast(aes_decrypt(usuarios.contraseña,'administrador') as char)='$contrasena'; ");
     
 
     if (count($loguearse) > 0) {
