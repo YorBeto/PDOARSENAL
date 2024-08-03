@@ -17,7 +17,7 @@ use proyecto\Controller\MostrarSociosController;
 use proyecto\Controller\LoginController;
 use proyecto\Controller\LoginSociosController;
 use proyecto\Controller\ProductosController;
-
+use proyecto\Controller\EmpleadosController;
 
 
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
@@ -27,6 +27,7 @@ Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
 Router::get('/categorias', [productos_servicios::class, "obtenerCategorias"]);
 
 Router::post('/registro',[PersonasController::class,"registroclientes"]);
+Router::post('/registroEmpleados',[EmpleadosController::class,"registroempleados"]);
 Router::post('/loginClientes',[LoginController::class,"loginClientes"]);
 
 Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
