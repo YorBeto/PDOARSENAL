@@ -8,7 +8,7 @@ use proyecto\Models\Table;
 use proyecto\Models\find;
 use proyecto\Models\save;
 
-class ProductosController
+class ProductosController extends models
 {
     public function insertarProducto()
     {

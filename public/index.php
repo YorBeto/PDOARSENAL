@@ -32,7 +32,7 @@ Router::post('/loginClientes',[LoginController::class,"loginClientes"]);
 Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
-Router::get('/adminproductos', [productos_servicios::class, "mostrarproductos"]);
+Router::get('/productos', [productos_servicios::class, "mostrarProductos"]);
 Router::get('/producto/buscar', [ProductosController::class, "buscarProducto"]);
 Router::get('/usuario/buscar/$id', function ($id) {
     $user = User::find($id);
