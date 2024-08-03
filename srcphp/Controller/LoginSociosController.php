@@ -21,16 +21,14 @@ class LoginSociosController{
         $usuario = addslashes($usuario);
         $contrasena = addslashes($contrasena);
 
-        $query = "SELECT socios.ID_SOCIO, usuarios.CONTRASEÑA
+        $usuarios2 = new Table();
+        $loguearse2 = $usuarios2->query("SELECT socios.ID_SOCIO, AES_DECRYPT(usuarios.CONTRASEÑA, 'administrador') AS contraseña_desencriptada
                     FROM socios
                     INNER JOIN clientes ON socios.ID_CLIENTE = clientes.ID_CLIENTES
                     INNER JOIN persona ON clientes.ID_PERSONA = persona.ID_PERSONA
                     INNER JOIN usuarios ON persona.ID_USUARIO = usuarios.ID_USUARIO
-                    WHERE socios.ID_SOCIO = '$usuario'
-                    and usuarios.CONTRASEÑA='$contrasena'";
-
-            $usuarios2 = new Table();
-            $loguearse2 = $usuarios2->query($query);
+                    WHERE socios.ID_SOCIO = '$usuario'");
+       
 
             if (count($loguearse2) > 0) {
                 // Respuesta de éxito
