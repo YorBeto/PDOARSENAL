@@ -34,6 +34,7 @@ Router::post('/loginSocios',[LoginSociosController::class,"loginsocios"]);
 
 Router::get('/crearpersona', [crearPersonaController::class, "crearPersona"]);
 Router::get('/productos', [productos_servicios::class, "mostrarProductos"]);
+Router::get('/productosinicio', [productos_servicios::class, "productosinicio"]);
 Router::get('/producto/buscar', [ProductosController::class, "buscarProducto"]);
 Router::get('/usuario/buscar/$id', function ($id) {
     $user = User::find($id);
