@@ -24,7 +24,7 @@ class productos_servicios extends Models
     return $success ->send();
     }
 
-    public function productosinicio(){
+    public function productosinicio(){ 
 
         $productoinicio=new Table();
         $todoslosproductosinicio=$productoinicio->query("SELECT productos_servicios.NOMBRE,productos_servicios.DESCRIPCION,
@@ -35,4 +35,3 @@ class productos_servicios extends Models
         return $success ->send();
     }
 }
-
