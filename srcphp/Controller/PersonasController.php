@@ -1,19 +1,17 @@
 <?php
-
 namespace proyecto\Controller;
 
 use proyecto\Models\Table;
 use proyecto\Response\Success;
+use proyecto\Response\Failure;
 use proyecto\Models\Personas;
-   
+
 class PersonasController {
 
     public function registroclientes() {
-        // Leer datos del cuerpo de la solicitud
         $JSONData = file_get_contents("php://input");
         $dataObject = json_decode($JSONData);
 
-        // Verificar que las propiedades existen en el objeto
         if (!isset($dataObject->nombre) || !isset($dataObject->apellidos) || 
             !isset($dataObject->fechaNacimiento) || !isset($dataObject->sexo) || 
             !isset($dataObject->correo) || !isset($dataObject->telefono) || 
@@ -22,7 +20,6 @@ class PersonasController {
             return;
         }
 
-        // Obtener los datos del objeto JSON
         $nombre = $dataObject->nombre;
         $apellidos = $dataObject->apellidos;
         $fechaNacimiento = $dataObject->fechaNacimiento;
@@ -31,7 +28,14 @@ class PersonasController {
         $telefono = $dataObject->telefono;
         $contrasena = $dataObject->contrasena;
 
-        // Llamar al procedimiento almacenado para registrar a la persona
+        // Verificar si el correo ya existe
+        $correoExistente = Table::query("SELECT * FROM personas WHERE correo = '$correo'");
+
+        if (count($correoExistente) > 0) {
+            echo json_encode(['success' => false, 'message' => 'El correo electrónico ya está registrado']);
+            return;
+        }
+
         $query = "CALL RegistrarPersonaLogin(
             '$nombre', 
             '$apellidos', 
@@ -42,7 +46,6 @@ class PersonasController {
             '$contrasena'
         )";
 
-        // Ejecutar la consulta
         try {
             $resultados = Table::query($query);
             $r = new Success(['success' => true, 'message' => 'Registro exitoso']);
