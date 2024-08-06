@@ -29,7 +29,7 @@ class productos_servicios extends Models
         $todoslosproductosinicio=$productoinicio->query("SELECT productos_servicios.NOMBRE,productos_servicios.DESCRIPCION,
         productos_servicios.PRECIO
         FROM productos_servicios;");
-
+        
         $success=new Success($todoslosproductosinicio);
         return $success ->send();
     }

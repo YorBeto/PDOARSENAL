@@ -31,9 +31,6 @@ class PersonasController {
         $telefono = $dataObject->telefono;
         $contrasena = $dataObject->contrasena;
 
-        // Clave de encriptación (asegúrate de manejar esto de manera segura)
-        $encryptionKey = 'tu_clave_de_encriptacion';  // Cambia esto por tu clave real
-
         // Llamar al procedimiento almacenado para registrar a la persona
         $query = "CALL RegistrarPersonaLogin(
             '$nombre', 
@@ -42,16 +39,17 @@ class PersonasController {
             '$sexo', 
             '$correo', 
             '$telefono', 
-            '$contrasena', 
-            'ROL001',
-            '$encryptionKey'
+            '$contrasena'
         )";
 
         // Ejecutar la consulta
-        $resultados = Table::query($query);
-
-        // Retornar la respuesta
-        $r = new Success($resultados);
-        return $r->send();
+        try {
+            $resultados = Table::query($query);
+            $r = new Success(['success' => true, 'message' => 'Registro exitoso']);
+            return $r->send();
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Error en el registro: ' . $e->getMessage()]);
+            return;
+        }
     }
 }
