@@ -1,17 +1,19 @@
 <?php
+
 namespace proyecto\Controller;
 
 use proyecto\Models\Table;
 use proyecto\Response\Success;
-use proyecto\Response\Failure;
 use proyecto\Models\Personas;
-
+   
 class PersonasController {
 
     public function registroclientes() {
+        // Leer datos del cuerpo de la solicitud
         $JSONData = file_get_contents("php://input");
         $dataObject = json_decode($JSONData);
 
+        // Verificar que las propiedades existen en el objeto
         if (!isset($dataObject->nombre) || !isset($dataObject->apellidos) || 
             !isset($dataObject->fechaNacimiento) || !isset($dataObject->sexo) || 
             !isset($dataObject->correo) || !isset($dataObject->telefono) || 
@@ -20,6 +22,7 @@ class PersonasController {
             return;
         }
 
+        // Obtener los datos del objeto JSON
         $nombre = $dataObject->nombre;
         $apellidos = $dataObject->apellidos;
         $fechaNacimiento = $dataObject->fechaNacimiento;
@@ -28,14 +31,10 @@ class PersonasController {
         $telefono = $dataObject->telefono;
         $contrasena = $dataObject->contrasena;
 
-        // Verificar si el correo ya existe
-        $correoExistente = Table::query("SELECT * FROM personas WHERE correo = '$correo'");
+        // Clave de encriptación (asegúrate de manejar esto de manera segura)
+        $encryptionKey = 'tu_clave_de_encriptacion';  // Cambia esto por tu clave real
 
-        if (count($correoExistente) > 0) {
-            echo json_encode(['success' => false, 'message' => 'El correo electrónico ya está registrado']);
-            return;
-        }
-
+        // Llamar al procedimiento almacenado para registrar a la persona
         $query = "CALL RegistrarPersonaLogin(
             '$nombre', 
             '$apellidos', 
@@ -43,16 +42,16 @@ class PersonasController {
             '$sexo', 
             '$correo', 
             '$telefono', 
-            '$contrasena'
+            '$contrasena', 
+            'ROL001',
+            '$encryptionKey'
         )";
 
-        try {
-            $resultados = Table::query($query);
-            $r = new Success(['success' => true, 'message' => 'Registro exitoso']);
-            return $r->send();
-        } catch (\Exception $e) {
-            echo json_encode(['success' => false, 'message' => 'Error en el registro: ' . $e->getMessage()]);
-            return;
-        }
+        // Ejecutar la consulta
+        $resultados = Table::query($query);
+
+        // Retornar la respuesta
+        $r = new Success($resultados);
+        return $r->send();
     }
 }
