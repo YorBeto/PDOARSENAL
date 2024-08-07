@@ -17,7 +17,7 @@
         {
 
 
-            $cc = new  Conexion("arsenal_gym", "localhost", "root", "");
+            $cc = new  Conexion("arsenal_gym", "18.191.33.31", "root", "1234");
 
             self::$pdo = $cc->getPDO();
         }
