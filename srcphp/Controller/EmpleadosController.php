@@ -2,9 +2,10 @@
 
 namespace proyecto\Controller;
 
+use proyecto\Models\Personas;
 use proyecto\Models\Table;
 use proyecto\Response\Success;
-use proyecto\Models\Personas;
+use Exception;
 
 class EmpleadosController {
 
@@ -49,7 +50,7 @@ class EmpleadosController {
             '$direccion',
             '$curp',
             '$rfc',
-            '$numeroSeguro'
+            '$numeroSeguro
         )";
 
         // Ejecutar la consulta
@@ -62,4 +63,7 @@ class EmpleadosController {
             return;
         }
     }
+
+    
+    
 }

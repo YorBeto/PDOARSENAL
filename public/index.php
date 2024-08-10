@@ -23,7 +23,7 @@ use proyecto\Controller\EmpleadosController;
 
 
 Router::get('/prueba', [crearPersonaController::class, "prueba"]);
-Router::get('/empleados', [Empleados::class, "mostrarempleados"]);
+Router::get('/empleados', [Empleados::class, "mostrarEmpleados"]);
 Router::get('/socios', [MostrarSociosController::class, "mostrarsocios"]);
 Router::get('/citas', [inbody_citas::class, "mostrarcitas"]);
 Router::get('/categorias', [productos_servicios::class, "obtenerCategorias"]);
