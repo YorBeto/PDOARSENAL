@@ -12,8 +12,8 @@ class MostrarSociosController{
     public function mostrarsocios(){
 
         $socios=new Table();
-        $todoslossocios=$socios ->query("SELECT socios.id_socio,persona.nombre,socios.membresia, 
-        socios.fecha_inicio, socios.fecha_fin,socios.estado_de_memb
+        $todoslossocios=$socios ->query("SELECT socios.id_socio as 'ID',persona.nombre as 'NOMBRE',socios.membresia as 'MEMBRESIA',
+        socios.fecha_inicio as 'FECHA DE INICIO', socios.fecha_fin as 'FECHA DE CADUCIDAD',socios.estado_de_memb as 'ESTADO DE MEMBRESIA'
         FROM persona INNER JOIN clientes ON persona.id_persona = clientes.id_persona
         INNER JOIN socios ON socios.id_cliente = clientes.id_clientes
         WHERE socios.estado_de_memb = 'ACTIVO';");

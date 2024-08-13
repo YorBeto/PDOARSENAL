@@ -4,6 +4,7 @@ namespace proyecto\Controller;
 
 use proyecto\Models\Personas;
 use proyecto\Models\Table;
+use proyecto\Response\Failure;
 use proyecto\Response\Success;
 use Exception;
 
@@ -50,7 +51,7 @@ class EmpleadosController {
             '$direccion',
             '$curp',
             '$rfc',
-            '$numeroSeguro
+            '$numeroSeguro'
         )";
 
         // Ejecutar la consulta
@@ -62,8 +63,28 @@ class EmpleadosController {
             echo json_encode(['success' => false, 'message' => 'Error en el registro: ' . $e->getMessage()]);
             return;
         }
+
     }
 
-    
-    
+    public function eliminarEmpleado() {
+        // Leer datos del cuerpo de la solicitud
+        $id = $_GET['id'] ?? '';
+
+        if (empty($id)) {
+            echo json_encode(['success' => false, 'message' => 'ID del empleado no proporcionado']);
+            return;
+        }
+
+        // Ejecutar consulta para eliminar el empleado
+        $query = "DELETE FROM EMPLEADOS WHERE ID_EMPLEADO = '$id'";
+
+        try {
+            Table::query($query);
+            $r = new Success(['success' => true, 'message' => 'Empleado eliminado con éxito']);
+            return $r->send();
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Error al eliminar el empleado: ' . $e->getMessage()]);
+            return;
+        }
+    }
 }

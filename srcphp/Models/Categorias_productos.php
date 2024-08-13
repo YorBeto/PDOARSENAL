@@ -13,7 +13,7 @@ class Categorias_productos Extends models {
 
     public function obtenerCategorias() {
         $categoria = new Table();
-        $todaslascategorias = $categoria->query("SELECT ID_CATEGORIA, NOMBRE FROM categoria_productos");
+        $todaslascategorias = $categoria->query("SELECT NOMBRE FROM categoria_productos");
 
         $success = new Success($todaslascategorias);
         return $success->send();
