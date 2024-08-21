@@ -2,7 +2,6 @@
 
 namespace proyecto\Models;
 
-
 use PDO;
 use proyecto\Auth;
 use proyecto\Response\Failure;
@@ -12,7 +11,6 @@ use function json_encode;
 
 class User extends Models
 {
-
     public $user = "";
     public $contrasena = "";
     public $nombre = "";
@@ -20,7 +18,7 @@ class User extends Models
     public $correo = "";
     public $apellido = "";
 
-    public $id = "";
+    public $id_usuario = "";
 
     /**
      * @var array
@@ -31,35 +29,100 @@ class User extends Models
         "correo",
         "apellido",
         "contrasena",
-        "user"
+        "user",
+        "id_usuario",
     ];
-    protected    $table = "usuarios";
 
+    protected $table = "USUARIOS";
+    protected $primaryKey = "ID_USUARIO";
 
-
-    public static function auth($user, $contrasena):Response
+    // Método para autenticación de usuarios
+    public static function auth($identificador, $contrasena)
     {
         $class = get_called_class();
         $c = new $class();
-        $stmt = self::$pdo->prepare("select *  from $c->table  where  user =:user  and contrasena=:contrasena");
-        $stmt->bindParam(":user", $user);
-        $stmt->bindParam(":contrasena", $contrasena);
-        $stmt->execute();
-        $resultados = $stmt->fetchAll(PDO::FETCH_CLASS,User::class);
-
-        if ($resultados) {
-//            Auth::setUser($resultados[0]);  pendiente
-            $r=new Success(["usuario"=>$resultados[0],"_token"=>Auth::generateToken([$resultados[0]->id])]);
-           return  $r->Send();
+    
+        // Define la clave de encriptación utilizada para AES
+        $clave_encriptacion = 'administrador'; // Asegúrate de que coincida con la clave utilizada en el procedimiento almacenado
+    
+        try {
+            if (filter_var($identificador, FILTER_VALIDATE_EMAIL)) {
+                // Es un correo electrónico
+                $stmt = self::$pdo->prepare("
+                    SELECT
+                        p.NOMBRE AS nombre,               -- Nombre del usuario
+                        p.APELLIDO AS apellido,           -- Apellido del usuario
+                        p.CORREO AS correo,               -- Correo electrónico del usuario
+                        u.ID_USUARIO AS id_usuario,       -- ID del usuario
+                        CAST(AES_DECRYPT(u.CONTRASEÑA, :clave_encriptacion) AS CHAR) AS contrasena
+                    FROM {$c->table} u
+                    INNER JOIN PERSONA p ON u.ID_USUARIO = p.ID_USUARIO
+                    WHERE p.CORREO = :identificador
+                ");
+            } else {
+                // Es un ID de socio
+                $stmt = self::$pdo->prepare("
+                    SELECT 
+                        p.NOMBRE AS nombre,               -- Nombre del usuario
+                        p.APELLIDO AS apellido,           -- Apellido del usuario
+                        p.CORREO AS correo,               -- Correo electrónico del usuario
+                        u.ID_USUARIO AS id_usuario,       -- ID del usuario
+                        socios.ID_SOCIO AS id_socio,      -- ID del socio
+                        CAST(AES_DECRYPT(u.CONTRASEÑA, :clave_encriptacion) AS CHAR) AS contrasena
+                    FROM socios
+                    INNER JOIN clientes ON socios.ID_CLIENTE = clientes.ID_CLIENTES
+                    INNER JOIN persona p ON clientes.ID_PERSONA = p.ID_PERSONA
+                    INNER JOIN usuarios u ON p.ID_USUARIO = u.ID_USUARIO
+                    WHERE socios.ID_SOCIO = :identificador
+                ");
+            }
+    
+            $stmt->bindParam(':identificador', $identificador);
+            $stmt->bindParam(':clave_encriptacion', $clave_encriptacion);
+            $stmt->execute();
+    
+            $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+    
+            if ($resultado && $resultado->contrasena === $contrasena) {
+                // Determina el tipo de usuario
+                $tipoUsuario = $resultado->id_socio ? 'socio' : 'cliente';
+    
+                // Usuario encontrado, retornar éxito con datos completos
+                return [
+                    'success' => true,
+                    'usuario' => [
+                        'nombre' => $resultado->nombre,
+                        'apellido' => $resultado->apellido,
+                        'correo' => $resultado->correo,
+                        'id_usuario' => $resultado->id_usuario,
+                        'id_socio' => $resultado->id_socio ?? null,
+                        'tipoUsuario' => $tipoUsuario // Añadido
+                    ],
+                    '_token' => Auth::generateToken([$resultado->id_usuario ?? $resultado->id_socio])
+                ];
+            }
+    
+            // No se encontraron resultados, credenciales inválidas
+            return [
+                'success' => false,
+                'msg' => "Credenciales inválidas."
+            ];
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'msg' => $e->getMessage()
+            ];
         }
-        $r=new Failure(401,"Usuario o contraseña incorrectos");
-        return $r->Send();
-
     }
+    
+
+
+    
+
 
     public function find_name($name)
     {
-        $stmt = self::$pdo->prepare("select *  from $this->table  where  nombre=:name");
+        $stmt = self::$pdo->prepare("SELECT * FROM $this->table WHERE nombre = :name");
         $stmt->bindParam(":name", $name);
         $stmt->execute();
         $resultados = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -69,14 +132,15 @@ class User extends Models
         return json_encode($resultados[0]);
     }
 
-    public  function reportecitas(){
+    public function reportecitas()
+    {
         $JSONData = file_get_contents("php://input");
         $dataObject = json_decode($JSONData);
 
-        $name=$dataObject->name;
-        $d=Table::query("select * from users  where name='".$name."'");
-        $r=new Success($d);
+        $name = $dataObject->name;
+        $d = Table::query("SELECT * FROM $this->table WHERE nombre = '".$name."'");
+        $r = new Success($d);
 
+        return $r->Send();
     }
-
 }

@@ -12,13 +12,11 @@ class Empleados extends Models{
 
     public function mostrarEmpleados(){
         $empleados = new Table();
-        $todoslosempleados = $empleados->query("SELECT E.ID_EMPLEADO AS ID, P.NOMBRE, P.APELLIDO,P.CORREO, P.TELEFONO, E.FECHA_REGISTRO AS 'FECHA REGISTRO',
-                                                E.DIRECCION, E.CURP, E.RFC, E.NUMERO_SEGURO AS 'NUMERO DE SEGURO' FROM EMPLEADOS E
-                                                INNER JOIN PERSONA P ON E.ID_PERSONA = P.ID_PERSONA
+        $todoslosempleados = $empleados->query("SELECT E.ID_EMPLEADO AS ID, CONCAT(P.NOMBRE, ' ', P.APELLIDO) AS 'NOMBRE', 
+                                                P.CORREO, P.TELEFONO, E.DIRECCION, E.CURP, E.RFC, E.NUMERO_SEGURO AS 'NUMERO DE SEGURO'
+                                                FROM EMPLEADOS E INNER JOIN PERSONA P ON E.ID_PERSONA = P.ID_PERSONA
                                                 INNER JOIN USUARIOS U ON P.ID_USUARIO = U.ID_USUARIO");
-
         $success = new Success($todoslosempleados);
         return $success->send();
     }
-
 }

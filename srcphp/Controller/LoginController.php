@@ -2,50 +2,40 @@
 
 namespace proyecto\Controller;
 
-use proyecto\Models\Table;
+use proyecto\Models\User;
+use proyecto\Response\Failure;
 use proyecto\Response\Success;
 
 class LoginController
 {
-    public function loginClientes() {
-        // Leer el contenido de la solicitud JSON
-        $JSONData = file_get_contents("php://input");
-        $dataObject = json_decode($JSONData);
-
-        // Obtener el correo y la contraseña del objeto JSON
-        $correo = $dataObject->correo;
-        $contrasena = $dataObject->contrasena;
-
-        // Escapar los datos para evitar problemas con caracteres especiales
-        $correo = addslashes($correo);
-        $contrasena = addslashes($contrasena);
-
-      
-        $login=new Table();
-        $loguearse=$login->query("SELECT PERSONA.CORREO, 
-        cast(aes_decrypt(usuarios.contraseña,'administrador') as char) as contraseña
-  FROM USUARIOS 
-  INNER JOIN PERSONA ON USUARIOS.ID_USUARIO = PERSONA.ID_USUARIO
-  WHERE PERSONA.CORREO = '$correo'
-  and  cast(aes_decrypt(usuarios.contraseña,'administrador') as char)='$contrasena'; ");
+    public function login() {
+        // Obtén el cuerpo de la solicitud y decodifica el JSON
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        // Verifica si los datos fueron decodificados correctamente
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return (new Failure(["msg" => "Error al procesar datos JSON."], 400))->Send();
+        }
     
-
-    if (count($loguearse) > 0) {
-        // Respuesta de éxito
-        $response = [
-            'success' => true,
-            'user' => $loguearse[0] // Puedes devolver más detalles del usuario aquí si lo deseas
-        ];
-    } else {
-        // Respuesta de error
-        $response = [
-            'success' => false,
-            'message' => 'Correo o contraseña incorrectos'
-        ];
-    }
-
-        // Devolver la respuesta como JSON
-        header('Content-Type: application/json');
-        echo json_encode($response);
+        // Obtén los datos del JSON
+        $identificador = $input['correo'] ?? null; // Puede ser correo o ID de socio
+        $contrasena = $input['contrasena'] ?? null;
+    
+        // Verifica los datos recibidos
+        if (!$identificador || !$contrasena) {
+            return (new Failure(["msg" => "Datos incompletos."], 400))->Send();
+        }
+    
+        // Utiliza el método auth para autenticar clientes o socios
+        $resultado = User::auth($identificador, $contrasena);
+    
+        if ($resultado['success']) {
+            return (new Success([
+                "usuario" => $resultado['usuario'],
+                "_token" => $resultado['_token']
+            ]))->Send();
+        } else {
+            return (new Failure(["msg" => $resultado['msg']], 401))->Send();
+        }
     }
 }
